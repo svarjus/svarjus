@@ -55,5 +55,7 @@ namespace FS
 	bool F_CloseFile(std::fstream* fp);
 	bool F_WriteToFile(std::fstream* fp, std::string text);
 	bool F_WriteToFile(std::fstream* fp, char text);
+
+	void something();
 }
 #endif

