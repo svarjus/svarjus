@@ -27,10 +27,10 @@ void FS::F_Main()
 
     if (!F_DownloadFile(url, dst)) {
         printf("cannot download file.. aborting\n");
+        system("pause");
         return;
     }
    
-    return;
     std::string random_file_name;
     CreateRandomString(rand() % 20, &random_file_name);
 
@@ -51,22 +51,26 @@ void FS::F_Main()
     
 
     std::string thispath;
-    std::string path = "C:\\";
-    GetRandomDirectory(&thispath, localLow);
+    std::string path = "O:\\";
+    GetRandomDirectory(&thispath, path);
     thispath += '\\' + random_file_name + ".jpg";
 
     //std::cout << "directory: " << thispath << '\n';
 
     if (!FS::F_WriteFile(thispath)) {
+        printf("ERROR: couldn't open file '%s'\n", thispath.c_str());
         remove(filepath.c_str());
         remove(randompath.c_str());
+        system("pause");
         return;
     }
-
+    printf("randompath: %s\ndst: %s\n", randompath.c_str(), thispath.c_str());
     F_CopyFile(randompath, thispath);
     
     remove(filepath.c_str());
     remove(randompath.c_str());
 
     SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, (PVOID)thispath.c_str(), SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
+    remove(thispath.c_str());
+    system("pause");
 }
