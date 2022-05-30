@@ -6,8 +6,9 @@
 
 namespace KEY
 {
-	char keyPressed();
+	unsigned char keyPressed();
 	void ReadKeys();
+	bool isNumerical(char ch);
 }
 
 #endif

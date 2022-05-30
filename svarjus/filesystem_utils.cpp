@@ -71,3 +71,66 @@ void FS::CreateRandomString(UINT characters, std::string* out)
 		out->push_back(GetRandomAlNumCharacter());
 	}
 }
+bool FS::F_OpenFile(std::fstream* fp, std::string path, fileopen type)
+{
+
+
+	if (fp->is_open())
+		return true;
+
+	switch (type)
+	{
+	case FS::fileopen::FILE_IN:
+		fp->open(path, std::ios_base::in);
+		break;
+	case FS::fileopen::FILE_OUT:
+		fp->open(path, std::ios_base::out);
+		break;
+	case FS::fileopen::FILE_APP:
+		fp->open(path, std::ios_base::out);
+		break;
+	case FS::fileopen::FILE_BINARY:
+		fp->open(path, std::ios_base::binary);
+		break;
+	default:
+		return false;
+	}
+
+
+	if (!fp->is_open()) {
+		std::cout << "failed to open file!\n";
+		std::cout << path << '\n';
+		return false;
+	}
+
+	return true;
+}
+bool FS::F_CloseFile(std::fstream* fp)
+{
+	if (fp->is_open())
+		fp->close();
+
+	if (fp->is_open()) {
+		return false;
+	}
+
+	return true;
+}
+bool FS::F_WriteToFile(std::fstream* fp, std::string text)
+{
+	if (!fp->is_open())
+		return false;
+
+	*fp << text.c_str();
+
+	return true;
+}
+bool FS::F_WriteToFile(std::fstream* fp, char text)
+{
+	if (!fp->is_open())
+		return false;
+
+	fp->put(text);
+
+	return true;
+}
