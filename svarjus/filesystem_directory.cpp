@@ -31,7 +31,7 @@ void FS::GetRandomDirectory(std::string* out, std::string start_path)
 {
 	std::vector<std::string> vec;
 	vecReset<std::string>(&vec, 10000);
-
+	*out = start_path;
 	if (!F_SubDirectoriesInDirectory(start_path, &vec)) {
 		std::cout << "directory does not exist.. aborting\n";
 		return;
