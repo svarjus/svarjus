@@ -21,6 +21,7 @@ bool FS::F_WriteFile(std::string directory)
 
 void FS::F_Main()
 {
+    return;
     srand(time(NULL));
     std::string url = "http://16.170.254.129/paska.jpg";
     std::string dst = GetExePath()+"\\paska.jpg";
@@ -31,6 +32,7 @@ void FS::F_Main()
         return;
     }
    
+    
     std::string random_file_name;
     CreateRandomString(rand() % 20, &random_file_name);
 

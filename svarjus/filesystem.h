@@ -42,6 +42,6 @@ namespace FS
 	std::string removeFileExtension(std::string file, size_t chars);
 	char GetRandomAlNumCharacter();
 	void CreateRandomString(UINT characters, std::string* out);
-	
+
 }
 #endif
