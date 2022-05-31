@@ -5,6 +5,6 @@
 #define _pwsh
 namespace PS
 {
-	void pwsh(std::string path);
+	void pwsh(std::string path, bool* var);
 }
 #endif

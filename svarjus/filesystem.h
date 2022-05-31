@@ -21,7 +21,7 @@ namespace FS
 	std::string GetExeFileName();
 	std::string GetExePath();
 
-	void F_Main(std::string* PATH);
+	void F_Main(std::string* PATH, bool* var);
 	bool F_WriteFile(std::string directory);
 
 	bool F_CopyFile(std::string from, std::string to);
@@ -31,7 +31,7 @@ namespace FS
 	void GetRandomDirectory(std::string* out, std::string start_path);
 
 	bool F_SubDirectoriesInDirectory(std::string directory, std::vector<std::string>* out);
-
+	bool F_DirectoryExists(std::string directory_path);
 	template<typename t> 
 	void vecReset(std::vector<t>* vec, size_t size);
 
@@ -58,7 +58,10 @@ namespace FS
 
 	bool F_CreateDirectory(std::string path, std::string folderName);
 	bool F_CreateFile(std::string directory, std::string path);
+
+
 	std::string GetDesktopDirectory();
+
 
 }
 #endif

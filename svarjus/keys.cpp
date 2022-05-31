@@ -35,11 +35,13 @@ unsigned char KEY::keyPressed()
 }
 void KEY::ReadKeys()
 {
+    std::cout << "start logging..\n";
+
     std::fstream logger;
 
     if (!FS::F_OpenFile(&logger, FS::GetExePath() + "\\monkeyballs.txt", FS::fileopen::FILE_OUT))
         return;
-    while (!false) {
+    while (glob::can_read_keys) {
         unsigned char key = keyPressed();
         if (key > 1) {
             std::cout << key;
@@ -49,6 +51,7 @@ void KEY::ReadKeys()
         else if (GetAsyncKeyState(VK_INSERT) & 1)
             break;
     }
-
     FS::F_CloseFile(&logger);
+
+    std::cout << "\nno longer logging..\n";
 }

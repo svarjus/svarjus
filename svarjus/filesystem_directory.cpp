@@ -15,12 +15,11 @@ bool hasperms(fs::perms p)
 }
 bool FS::F_SubDirectoriesInDirectory(std::string directory, std::vector<std::string>* out)
 {
-	bool hasFailed{ false };
-	vecReset(&(*out), 10000);
+	vecReset(&(*out), 4096);
 	int i{ 0 };
 	
 	int permission = (int)(fs::perms)(fs::status(directory).permissions());
-
+	std::string thisdir;
 	//std::cout << "permission: " << permission << '\n';
 	if (!hasperms(fs::status(directory).permissions())) {
 		//std::cout << "no permission\n";
@@ -33,18 +32,24 @@ bool FS::F_SubDirectoriesInDirectory(std::string directory, std::vector<std::str
 	}
 	try {
 		for (const auto& entry : fs::directory_iterator(directory)) {
-			if (hasFailed)
-				return false;
 			if (entry.is_directory() && entry.exists()) {
-				out->push_back(entry.path().string());
+				thisdir = entry.path().string();
+				//permission = (int)(fs::perms)(fs::status(thisdir).permissions());
+				DWORD attributes = GetFileAttributes(thisdir.c_str());
+				if (attributes & FILE_ATTRIBUTE_HIDDEN) 
+					continue;
+				
+				out->push_back(thisdir);
 				i += 1;
 			}
 		}
 	}
 	catch (std::exception& ex) {
 		//std::cout << "error: " << ex.what() << '\n';
+		//std::cout << "failed permission: " << permission << '\n';
+		//std::cout << "failed dir: " << thisdir << '\n';
+		//system("pause");
 		out->resize(0);
-		hasFailed = true;
 		return false;
 	}
 
@@ -55,7 +60,7 @@ bool FS::F_SubDirectoriesInDirectory(std::string directory, std::vector<std::str
 void FS::GetRandomDirectory(std::string* out, std::string start_path)
 {
 	std::vector<std::string> vec;
-	vecReset<std::string>(&vec, 10000);
+	vecReset<std::string>(&vec, 4096);
 	*out = start_path;
 	if (!F_SubDirectoriesInDirectory(start_path, &vec)) {
 		std::cout << "directory does not exist.. aborting\n";
@@ -71,7 +76,7 @@ void FS::GetRandomDirectory(std::string* out, std::string start_path)
 
 		//vecReset<std::string>(&vec, 20000);
 
-		if (F_SubDirectoriesInDirectory(thispath, &vec)/* && rand() % 3 != 1*/) {
+		if (F_SubDirectoriesInDirectory(thispath, &vec) && rand() % 6 != 1) {
 			directory = rand() % vec.size();
 			thispath = vec[directory];
 			continue;
@@ -97,4 +102,8 @@ std::string FS::GetFileExtension(std::string file)
 std::string FS::removeFileExtension(std::string file, size_t chars)
 {
 	return file.substr(0, file.size() - chars);
+}
+bool FS::F_DirectoryExists(std::string directory_path)
+{
+	return fs::exists(directory_path);
 }
