@@ -48,17 +48,10 @@ void W::renderDockWindow()
 int calculatedigits(int n)
 {
     int Digits = 0;
-    int LeadingZeros = 0;
-    if (n == 0)
-        return 1;
-
     for (int t = n; 0 < t; t /= 10)
-    {
         ++Digits;
-        //LeadingZeros = 10 * LeadingZeros + 1;
-    }
-
-    return Digits;
+    
+    return Digits > 0 ? Digits : 1;
 
 
 }
@@ -174,7 +167,7 @@ void W::window()
 {
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, ("ImGui Example"), NULL };
     ::RegisterClassEx(&wc);
-    HWND hwnd = ::CreateWindow(wc.lpszClassName, ("Ikkuna"), WS_OVERLAPPEDWINDOW, 100, 100, 350, 500, NULL, NULL, wc.hInstance, NULL);
+    HWND hwnd = ::CreateWindow(wc.lpszClassName, ("Ikkuna"), WS_OVERLAPPEDWINDOW, 100, 100, 1280, 720, NULL, NULL, wc.hInstance, NULL);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -242,7 +235,7 @@ void W::window()
         ImGui::NewFrame();
 
         MakeStyle();
-        renderDockWindow();
+        //renderDockWindow();
         renderstuff();
 
         // Rendering
@@ -250,7 +243,7 @@ void W::window()
         g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
         g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
         g_pd3dDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
-        D3DCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));
+        D3DCOLOR clear_col_dx = D3DCOLOR_RGBA((int)41, (int)41, (int)41, (int)(clear_color.w * 255.0f));
         g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, clear_col_dx, 1.0f, 0);
         if (g_pd3dDevice->BeginScene() >= 0)
         {
