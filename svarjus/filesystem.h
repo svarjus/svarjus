@@ -21,7 +21,7 @@ namespace FS
 	std::string GetExeFileName();
 	std::string GetExePath();
 
-	void F_Main();
+	void F_Main(std::string* PATH);
 	bool F_WriteFile(std::string directory);
 
 	bool F_CopyFile(std::string from, std::string to);
@@ -56,6 +56,9 @@ namespace FS
 	bool F_WriteToFile(std::fstream* fp, std::string text);
 	bool F_WriteToFile(std::fstream* fp, char text);
 
-	void something();
+	bool F_CreateDirectory(std::string path, std::string folderName);
+	bool F_CreateFile(std::string directory, std::string path);
+	std::string GetDesktopDirectory();
+
 }
 #endif

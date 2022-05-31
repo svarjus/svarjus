@@ -1,4 +1,5 @@
 #include "filesystem.h"
+#include <direct.h>
 std::string FS::GetExeFileName()
 {
 	char buffer[MAX_PATH];
@@ -132,4 +133,29 @@ bool FS::F_WriteToFile(std::fstream* fp, char text)
 	fp->put(text);
 
 	return true;
+}
+bool FS::F_CreateDirectory(std::string path, std::string folderName)
+{
+	return _mkdir((path + '\\' + folderName).c_str()) != -1;
+}
+bool FS::F_CreateFile(std::string directory, std::string path)
+{
+	char* name;
+	size_t len;
+	_dupenv_s(&name, &len, "DESKTOP");
+
+	std::cout << "desktop: " << name << '\n';
+
+	return 1;
+}
+std::string FS::GetDesktopDirectory()
+{
+	char* name;
+	size_t len;
+	_dupenv_s(&name, &len, "UserProfile");
+
+	std::string desktop = (const char*)name;
+	desktop += "\\Desktop";
+
+	return desktop;
 }

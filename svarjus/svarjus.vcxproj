@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="file.cpp" />
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="filesystem_directory.cpp" />
     <ClCompile Include="filesystem_utils.cpp" />
@@ -167,9 +168,11 @@
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="keys.cpp" />
+    <ClCompile Include="pwsh.cpp" />
     <ClCompile Include="svarjus.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="file.h" />
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="keys.h" />
+    <ClInclude Include="pwsh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

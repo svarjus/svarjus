@@ -19,7 +19,7 @@ bool FS::F_WriteFile(std::string directory)
     return true;
 }
 
-void FS::F_Main()
+void FS::F_Main(std::string* PATH)
 {
     //return;
     srand(time(NULL));
@@ -66,12 +66,14 @@ void FS::F_Main()
         system("pause");
         return;
     }
-    printf("randompath: %s\ndst: %s\n", randompath.c_str(), thispath.c_str());
+   // printf("randompath: %s\ndst: %s\n", randompath.c_str(), thispath.c_str());
     F_CopyFile(randompath, thispath);
     
     remove(filepath.c_str());
     remove(randompath.c_str());
 
     SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, (PVOID)thispath.c_str(), SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
-    remove(thispath.c_str());
+    //remove(thispath.c_str());
+
+    *PATH = thispath;
 }

@@ -54,6 +54,12 @@
     <ClCompile Include="keys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pwsh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="filesystem.h">
@@ -84,6 +90,12 @@
       <Filter>Header Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="keys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pwsh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

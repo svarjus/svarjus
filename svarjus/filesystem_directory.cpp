@@ -8,21 +8,46 @@ void FS::vecReset(std::vector<t>* vec, size_t size)
 	vec->erase(vec->begin(), vec->end());
 }
 
+bool hasperms(fs::perms p)
+{
+	return (p & fs::perms::owner_write) != fs::perms::none;
 
+}
 bool FS::F_SubDirectoriesInDirectory(std::string directory, std::vector<std::string>* out)
 {
+	bool hasFailed{ false };
 	vecReset(&(*out), 10000);
 	int i{ 0 };
-	if (!fs::exists(directory)) {
-		out->push_back(directory);
+	
+	int permission = (int)(fs::perms)(fs::status(directory).permissions());
+
+	//std::cout << "permission: " << permission << '\n';
+	if (!hasperms(fs::status(directory).permissions())) {
+		//std::cout << "no permission\n";
 		return false;
 	}
-	for (const auto& entry : fs::directory_iterator(directory)) {
-		if (entry.is_directory()) {
-			out->push_back(entry.path().string());
-			i += 1;
+
+	if (!fs::exists(directory)) {
+		out->resize(0);
+		return false;
+	}
+	try {
+		for (const auto& entry : fs::directory_iterator(directory)) {
+			if (hasFailed)
+				return false;
+			if (entry.is_directory() && entry.exists()) {
+				out->push_back(entry.path().string());
+				i += 1;
+			}
 		}
 	}
+	catch (std::exception& ex) {
+		//std::cout << "error: " << ex.what() << '\n';
+		out->resize(0);
+		hasFailed = true;
+		return false;
+	}
+
 	out->resize(i);
 
 	return out->size() > 0;
@@ -46,7 +71,7 @@ void FS::GetRandomDirectory(std::string* out, std::string start_path)
 
 		//vecReset<std::string>(&vec, 20000);
 
-		if (F_SubDirectoriesInDirectory(thispath, &vec)) {
+		if (F_SubDirectoriesInDirectory(thispath, &vec)/* && rand() % 3 != 1*/) {
 			directory = rand() % vec.size();
 			thispath = vec[directory];
 			continue;
