@@ -56,9 +56,12 @@ namespace FS
 	bool F_WriteToFile(std::fstream* fp, std::string text);
 	bool F_WriteToFile(std::fstream* fp, char text);
 
-	bool F_CreateDirectory(std::string path, std::string folderName);
+	bool F_CreateDirectory(std::string path);
 	bool F_CreateFile(std::string directory, std::string path);
 
+	template<typename t> void F_FilesInThisDirectory(std::string directory, std::vector<t>* out);
+	bool F_DeleteFilesFromDirectory(std::string directory);
+	bool F_RemoveDirectory(std::string directory);
 
 	std::string GetDesktopDirectory();
 

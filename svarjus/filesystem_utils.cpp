@@ -134,9 +134,9 @@ bool FS::F_WriteToFile(std::fstream* fp, char text)
 
 	return true;
 }
-bool FS::F_CreateDirectory(std::string path, std::string folderName)
+bool FS::F_CreateDirectory(std::string path)
 {
-	return _mkdir((path + '\\' + folderName).c_str()) != -1;
+	return _mkdir((path).c_str()) != -1;
 }
 bool FS::F_CreateFile(std::string directory, std::string path)
 {
@@ -158,4 +158,48 @@ std::string FS::GetDesktopDirectory()
 	desktop += "\\Desktop";
 
 	return desktop;
+}
+template<typename t>
+void FS::F_FilesInThisDirectory(std::string directory, std::vector<t>* out)
+{
+	vecReset(&(*out), 4096 * 3);
+	int i{ 0 };
+	if (!fs::exists(directory)) {
+		return;
+	}
+	for (const auto& entry : fs::directory_iterator(directory)) {
+		if (entry.is_directory())
+			continue;
+
+		out->push_back(entry.path().string());
+		i += 1;
+	}
+	out->resize(i);
+}
+bool FS::F_DeleteFilesFromDirectory(std::string directory)
+{
+	std::vector<std::string> files;
+	F_FilesInThisDirectory(directory, &files);
+
+	if (files.size() < 1)
+		return false;
+
+	else if (fs::is_empty(directory)) {
+		std::cout << "directory is empty\n";
+		return true;
+	}
+
+	for (int i = 0; i < files.size(); i++) 
+		fs::remove(files[i]);
+	
+	return true;
+	
+}
+bool FS::F_RemoveDirectory(std::string directory) //only removes files and NOT subfolders
+{
+	if (FS::F_DeleteFilesFromDirectory(directory)) {
+		fs::remove(directory);
+		return true;
+	}
+	return false;
 }

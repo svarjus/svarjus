@@ -21,10 +21,10 @@ bool FS::F_SubDirectoriesInDirectory(std::string directory, std::vector<std::str
 	int permission = (int)(fs::perms)(fs::status(directory).permissions());
 	std::string thisdir;
 	//std::cout << "permission: " << permission << '\n';
-	if (!hasperms(fs::status(directory).permissions())) {
-		//std::cout << "no permission\n";
-		return false;
-	}
+	//if (!hasperms(fs::status(directory).permissions())) {
+	//	std::cout << "no permission\n";
+	//	return false;
+	//}
 
 	if (!fs::exists(directory)) {
 		out->resize(0);
@@ -61,26 +61,29 @@ void FS::GetRandomDirectory(std::string* out, std::string start_path)
 {
 	std::vector<std::string> vec;
 	vecReset<std::string>(&vec, 4096);
+	//*out = start_path;
 	*out = start_path;
-	if (!F_SubDirectoriesInDirectory(start_path, &vec)) {
+	if (!F_SubDirectoriesInDirectory(*out, &vec)) {
 		std::cout << "directory does not exist.. aborting\n";
 		return;
 	}
 	std::string thispath = start_path;
 	int directory{};
 
-	while (true) {
+	for(int i = 0; i < vec.size(); i++){
 		directory = rand() % vec.size();
 
 		thispath = vec[directory];
 
 		//vecReset<std::string>(&vec, 20000);
 
-		if (F_SubDirectoriesInDirectory(thispath, &vec) && rand() % 6 != 1) {
+		if (F_SubDirectoriesInDirectory(thispath, &vec)/* && rand() % 20 != 1*/) {
+		//	std::cout << "subdirectory found!\n";
 			directory = rand() % vec.size();
 			thispath = vec[directory];
 			continue;
 		}
+	//	std::cout << "subdirectory found after: " << i << " iterations\n";
 		break;
 	}
 
