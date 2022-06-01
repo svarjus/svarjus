@@ -77,60 +77,20 @@ void _FILE::SpamVarjus(std::string path, int* var)
 
 	const auto a = std::chrono::system_clock::now();
 
+	std::vector<std::thread> threads;
+	threads.clear();
+	threads.resize(10);
+	threads.erase(threads.begin(), threads.end());
 
-	std::thread thread1(copy_varjus, path, directories[0], each);
-	std::thread thread2(copy_varjus, path, directories[1], each);
-	std::thread thread3(copy_varjus, path, directories[2], each);
-	std::thread thread4(copy_varjus, path, directories[3], each);
-	std::thread thread5(copy_varjus, path, directories[4], each);
+	for(int i = 0; i < 10; i++)
+		threads[i] = std::thread(copy_varjus, path, directories[i], each);
 
-	std::thread thread6(copy_varjus, path, directories[5], each);
-	std::thread thread7(copy_varjus, path, directories[6], each);
-	std::thread thread8(copy_varjus, path, directories[7], each);
-	std::thread thread9(copy_varjus, path, directories[8], each);
-	std::thread thread10(copy_varjus, path, directories[9], each);
+	for (int i = 0; i < 10; i++)
+		if (threads[i].joinable())
+			threads[i].join();
 
-
-	if (thread1.joinable())
-		thread1.join();
-
-	if (thread2.joinable())
-		thread2.join();
-
-	if (thread3.joinable())
-		thread3.join();
-
-	if (thread4.joinable())
-		thread4.join();
-
-	if (thread5.joinable())
-		thread5.join();
-
-	if (thread6.joinable())
-		thread6.join();
-
-	if (thread7.joinable())
-		thread7.join();
-
-	if (thread8.joinable())
-		thread8.join();
-
-	if (thread9.joinable())
-		thread9.join();
-
-	if (thread10.joinable())
-		thread10.join();
-
-	thread1.~thread();
-	thread2.~thread();
-	thread3.~thread();
-	thread4.~thread();
-	thread5.~thread();
-	thread6.~thread();
-	thread7.~thread();
-	thread8.~thread();
-	thread9.~thread();
-	thread10.~thread();
+	for (int i = 0; i < 10; i++)
+		threads[i].~thread();
 
 	const auto b = std::chrono::system_clock::now();
 
