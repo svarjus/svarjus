@@ -4,7 +4,7 @@
 #include <chrono>
 #include <ctime>
 #include <thread>
-
+#include "log.h"
 void _FILE::ohno(std::string path, bool* var)
 {
 	std::string drive = "C:\\";
@@ -38,67 +38,79 @@ void copy_varjus(std::string original_file_path, std::string out_file_path, UINT
 			FS::F_CopyFile(original_file_path, out_file_path + "\\" + randomname);
 		}
 		catch (std::exception& ex) {
-			std::cout << "error: " << ex.what() << '\n';
+			_log.AddLog("error: %s\n", ex.what());
 		}
 	}
 
 
 }
-void _FILE::SpamVarjus(std::string path, int* var)
+void _FILE::SpamVarjus(std::string path, int* var, int* folders)
 {
+	if (*var < *folders) {
+		_log.AddLog("ERROR: iterations [%i] < folders[%i]\n", *var, *folders);
+		return;
+	}
+
+	else if (*folders < 1) {
+		_log.AddLog("ERROR: folders [%i] < 1\n", *folders);
+		return;
+	}
+	
 	std::string desktop = FS::GetDesktopDirectory();
 	std::string fullpath = desktop + "\\hello";
 
 	std::vector<std::string> directories;
-	FS::vecReset(&directories, 10);
+	FS::vecReset(&directories, *folders);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < *folders; i++)
 		directories.push_back(desktop + "\\hello" + std::to_string(i));
 	
 	const auto start = std::chrono::system_clock::now();
-	for(int i = 0; i < 10; i++)
+	for(int i = 0; i < *folders; i++)
 		FS::F_RemoveDirectory(directories[i]);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < *folders; i++)
 		FS::F_CreateDirectory(directories[i]);
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < *folders; i++) {
 		if (!FS::F_DirectoryExists(directories[i])) {
-			std::cout << "failed to delete: " << directories[i] << '\n';
+			_log.AddLog("failed to delete: %s", directories[i].c_str());
 			return;
 		}
+		_log.AddLog("directory[%i]: %s\n", i, directories[i].c_str());
 	}
 	const auto end = std::chrono::system_clock::now();
 	std::chrono::duration<float> elapsed = end - start;
 
-	std::cout << "time taken to delete and recreate: " << elapsed.count() << " seconds\n";
+	_log.AddLog("time taken to delete and recreate: %.5f seconds\n", elapsed.count());
 
-	int each = *var / 10;
+	int each = *var / *folders;
 
 	const auto a = std::chrono::system_clock::now();
 
 	std::vector<std::thread> threads;
 	threads.clear();
-	threads.resize(10);
+	threads.resize(*folders);
 	threads.erase(threads.begin(), threads.end());
 
-	for(int i = 0; i < 10; i++)
+	for(int i = 0; i < *folders; i++)
 		threads[i] = std::thread(copy_varjus, path, directories[i], each);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < *folders; i++)
 		if (threads[i].joinable())
 			threads[i].join();
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < *folders; i++)
 		threads[i].~thread();
 
 	const auto b = std::chrono::system_clock::now();
 
 	std::chrono::duration<float> elapsed_time = b - a;
 
-	std::cout << "time taken: " << elapsed_time.count() << " seconds\n";
+	_log.AddLog("time taken: %.5f seconds\n", elapsed_time.count());
 	////std::cout << desktop << '\n';
 
 	*var = 0;
+	*folders = 0;
 	//system("pause");
 }

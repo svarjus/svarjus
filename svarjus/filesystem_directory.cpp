@@ -64,7 +64,7 @@ void FS::GetRandomDirectory(std::string* out, std::string start_path)
 	//*out = start_path;
 	*out = start_path;
 	if (!F_SubDirectoriesInDirectory(*out, &vec)) {
-		std::cout << "directory does not exist.. aborting\n";
+		_log.AddLog("directory does not exist.. aborting\n");
 		return;
 	}
 	std::string thispath = start_path;

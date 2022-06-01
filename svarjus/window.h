@@ -29,10 +29,17 @@ namespace W
 	LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	void window();
-	void renderstuff();
+	void renderstuff(HWND hwnd);
 	void MakeStyle();
 	void renderDockWindow();
+	
+	void render_log(HWND hwnd);
 
+	namespace _utils
+	{
+		void GetWindowResolution(RECT rect, float* resolution);
+		RECT GetWindowDimensions(HWND hwnd, RECT* rect);
+	}
 
 }
 #endif

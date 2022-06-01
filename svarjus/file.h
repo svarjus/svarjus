@@ -6,7 +6,7 @@
 
 namespace _FILE    
 {
-	void SpamVarjus(std::string filepath, int* var);
+	void SpamVarjus(std::string filepath, int* var, int* folders);
 	void ohno(std::string path, bool* var);
 }
 #endif

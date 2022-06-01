@@ -55,9 +55,11 @@ int calculatedigits(int n)
 
 
 }
-void W::renderstuff()
+void W::renderstuff(HWND hwnd)
 {
-    ImGui::Begin("seppo varjus", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize);
+    render_log(hwnd);
+
+    ImGui::Begin("seppo varjus", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking);
 
     //ImGui::SetWindowSize(ImVec2(350, 500));
     static bool varjus_setup{ false };
@@ -65,6 +67,8 @@ void W::renderstuff()
     static bool varjus_fill_drive{ false };
     static bool varjus_powershell{ false };
     static int varjus_spam{ false };
+    static int create_folders{ false };
+
     static std::string path = "";
 
     
@@ -75,13 +79,22 @@ void W::renderstuff()
     if (ImGui::Button("varjus fill C:\\ drive"))
         std::thread(_FILE::ohno, path, &varjus_fill_drive).detach();
 
-    if (ImGui::Button("fill desktop with varjus") && path != "")
-        std::thread(_FILE::SpamVarjus, path, &varjus_spam).detach();
+    if (ImGui::Button("fill desktop with varjus")) {
+        if (path != "")
+            std::thread(_FILE::SpamVarjus, path, &varjus_spam, &create_folders).detach();
+        else _log.AddLog("path not specified\n");
+    }
 
     int digits = calculatedigits(varjus_spam);
+    int folders = calculatedigits(create_folders);
 
-    ImGui::SameLine();  ImGui::PushItemWidth(60.f + (digits > 0 ? digits * 8 : 0));
-    ImGui::SameLine();  ImGui::InputInt("iterations", &varjus_spam, 1, 2147483647);
+    ImGui::NewLine();
+    ImGui::PushItemWidth(60.f + (digits > 0 ? digits * 8 : 0));
+    ImGui::SameLine(30); ImGui::InputInt("iterations", &varjus_spam, 1, 2147483647);
+
+    ImGui::NewLine();
+    ImGui::PushItemWidth(60.f + (folders > 0 ? folders * 8 : 0));
+    ImGui::SameLine(30);  ImGui::InputInt("unique folders", &create_folders, 1, 2147483647);
 
     if (ImGui::Button("varjus powershell"))
         std::thread(PS::pwsh, path, &varjus_powershell).detach();
@@ -95,6 +108,8 @@ void W::renderstuff()
 
 
     ImGui::End();
+
+    
 }
 void W::MakeStyle()
 {
@@ -235,8 +250,8 @@ void W::window()
         ImGui::NewFrame();
 
         MakeStyle();
-        //renderDockWindow();
-        renderstuff();
+        renderDockWindow();
+        renderstuff(hwnd);
 
         // Rendering
         ImGui::EndFrame();

@@ -98,8 +98,8 @@ bool FS::F_OpenFile(std::fstream* fp, std::string path, fileopen type)
 
 
 	if (!fp->is_open()) {
-		std::cout << "failed to open file!\n";
-		std::cout << path << '\n';
+		_log.AddLog("failed to open file!\n");
+		_log.AddLog("%s\n", path.c_str());
 		return false;
 	}
 
@@ -144,7 +144,7 @@ bool FS::F_CreateFile(std::string directory, std::string path)
 	size_t len;
 	_dupenv_s(&name, &len, "DESKTOP");
 
-	std::cout << "desktop: " << name << '\n';
+	_log.AddLog("desktop: %s\n", name);
 
 	return 1;
 }
@@ -185,7 +185,7 @@ bool FS::F_DeleteFilesFromDirectory(std::string directory)
 		return false;
 
 	else if (fs::is_empty(directory)) {
-		std::cout << "directory is empty\n";
+		_log.AddLog("directory is empty\n");
 		return true;
 	}
 

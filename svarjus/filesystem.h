@@ -11,7 +11,7 @@
 #include <Shlobj.h>
 #include <ShlObj_core.h>
 #include <fstream>
-
+#include "log.h"
 namespace fs = std::filesystem;
 constexpr int MAX_VEC_SIZE = 20;
 #ifndef thisfilesystem

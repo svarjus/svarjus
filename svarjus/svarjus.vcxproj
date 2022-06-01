@@ -170,9 +170,11 @@
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="keys.cpp" />
+    <ClCompile Include="log.cpp" />
     <ClCompile Include="pwsh.cpp" />
     <ClCompile Include="svarjus.cpp" />
     <ClCompile Include="window.cpp" />
+    <ClCompile Include="window_utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="keys.h" />
+    <ClInclude Include="log.h" />
     <ClInclude Include="pwsh.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>

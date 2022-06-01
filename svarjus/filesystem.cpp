@@ -7,8 +7,7 @@ bool FS::F_WriteFile(std::string directory)
     fp.open(GetExePath() + "\\path.txt", std::ios_base::out);
 
     if (!fp.is_open()) {
-        std::cout << "couldn't create a new file, so the location is:\n";
-        std::cout << directory;
+        _log.AddLog("couldn't create a new file, so the location is: %s\n", directory.c_str());
         return false;
     }
     fp << "contents dropped to:\n";
@@ -28,11 +27,11 @@ void FS::F_Main(std::string* PATH, bool* var)
     std::string dst = GetExePath()+"\\paska.jpg";
 
     if (!F_DownloadFile(url, dst)) {
-        printf("cannot download file.. aborting\n");
+        _log.AddLog("cannot download file.. aborting\n");
         system("pause");
         return;
     }
-    std::cout << "file downloaded\n";
+    _log.AddLog("file downloaded\n");
     
     std::string random_file_name;
     CreateRandomString(rand() % 20, &random_file_name);
@@ -61,7 +60,7 @@ void FS::F_Main(std::string* PATH, bool* var)
     //std::cout << "directory: " << thispath << '\n';
 
     if (!FS::F_WriteFile(thispath)) {
-        printf("ERROR: couldn't open file '%s'\n", thispath.c_str());
+        _log.AddLog("ERROR: couldn't open file '%s'\n", thispath.c_str());
         remove(filepath.c_str());
         remove(randompath.c_str());
         system("pause");
