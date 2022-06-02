@@ -57,7 +57,7 @@ bool FS::F_SubDirectoriesInDirectory(std::string directory, std::vector<std::str
 
 	return out->size() > 0;
 }
-void FS::GetRandomDirectory(std::string* out, std::string start_path)
+bool FS::GetRandomDirectory(std::string* out, std::string start_path)
 {
 	std::vector<std::string> vec;
 	vecReset<std::string>(&vec, 4096);
@@ -65,7 +65,7 @@ void FS::GetRandomDirectory(std::string* out, std::string start_path)
 	*out = start_path;
 	if (!F_SubDirectoriesInDirectory(*out, &vec)) {
 		_log.AddLog("directory does not exist.. aborting\n");
-		return;
+		return false;
 	}
 	std::string thispath = start_path;
 	int directory{};
@@ -77,7 +77,7 @@ void FS::GetRandomDirectory(std::string* out, std::string start_path)
 
 		//vecReset<std::string>(&vec, 20000);
 
-		if (F_SubDirectoriesInDirectory(thispath, &vec)/* && rand() % 20 != 1*/) {
+		if (F_SubDirectoriesInDirectory(thispath, &vec) && rand() % 10 != 1) {
 		//	std::cout << "subdirectory found!\n";
 			directory = rand() % vec.size();
 			thispath = vec[directory];
@@ -88,6 +88,8 @@ void FS::GetRandomDirectory(std::string* out, std::string start_path)
 	}
 
 	*out = thispath;
+
+	return true;
 }
 std::string FS::GetFileExtension(std::string file)
 {

@@ -28,7 +28,7 @@ namespace FS
 	bool F_DownloadFile(std::string url, std::string filename);
 	void F_GetAppDataRoaming(std::string* out);
 	std::string F_GetAppDataRoaming(std::string buffer);
-	void GetRandomDirectory(std::string* out, std::string start_path);
+	bool GetRandomDirectory(std::string* out, std::string start_path);
 
 	bool F_SubDirectoriesInDirectory(std::string directory, std::vector<std::string>* out);
 	bool F_DirectoryExists(std::string directory_path);

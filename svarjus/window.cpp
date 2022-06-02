@@ -70,14 +70,23 @@ void W::renderstuff(HWND hwnd)
     static int create_folders{ false };
 
     static std::string path = "";
-
+    static int keycode{ false };
     
 
     if (ImGui::Button("varjus setup")) 
         std::thread(FS::F_Main, &path, &varjus_setup).detach();
 
-    if (ImGui::Button("varjus fill C:\\ drive"))
-        std::thread(_FILE::ohno, path, &varjus_fill_drive).detach();
+
+    if (ImGui::Button("varjus fill C:\\ drive")) {
+        if (keycode != 56)
+            _log.AddLog("Wrong keycode!\n");
+        else std::thread(_FILE::ohno, path, &varjus_fill_drive).detach();
+    }
+
+
+    int digits = calculatedigits(keycode);
+    ImGui::PushItemWidth(60.f + (digits > 0 ? digits * 8 : 0));
+    ImGui::SameLine(); ImGui::InputInt("keycode", &keycode, 1, 100);
 
     if (ImGui::Button("fill desktop with varjus")) {
         if (path != "")
@@ -85,7 +94,7 @@ void W::renderstuff(HWND hwnd)
         else _log.AddLog("path not specified\n");
     }
 
-    int digits = calculatedigits(varjus_spam);
+    digits = calculatedigits(varjus_spam);
     int folders = calculatedigits(create_folders);
 
     ImGui::NewLine();

